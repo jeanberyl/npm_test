@@ -42,6 +42,8 @@ server.route({
     path: '/',
     handler: (req, h) => {
 
+        return (async () => {
+
         //https://societeinfo.com/app/rest/api/v1/querysearch/companies/json?query=IDENTIQ&where=93100&limit=10&key=g4onk62np2m1a7q5co2engenbf3u3itbg3ggnfkbcfk6367sddp
         //https://societeinfo.com/app/rest/api/v1/company/json?registration_number=493361372&key=g4onk62np2m1a7q5co2engenbf3u3itbg3ggnfkbcfk6367sddp
         const body = await request('https://societeinfo.com/app/rest/api/v1/querysearch/companies/json?query=IDENTIQ&where=93100&limit=10&key=a8fqrjl63ciuvduiglp36r36o29nivj3qdjq542drrhpvt3t540', function (error, response, body) {
@@ -78,6 +80,7 @@ server.route({
 
         return body;
 
+    })()
 
     }
 })
