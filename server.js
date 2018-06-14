@@ -10,7 +10,7 @@ const server = Hapi.server({
     port: process.env.PORT || 3000
 });
 
-var Code_Naf = {
+const codenaf = {
    
     "A": "Agriculture, sylviculture et pêche",
     "B": "Industries extractives",
@@ -32,7 +32,7 @@ var Code_Naf = {
     "R": "Arts, spectacles et activités récréatives",
     "S": "Autres activités de services",
     "T": "Activités des ménages en tant qu'employeurs ; activités indifférenciées des ménages en tant que producteurs de biens et services pour usage propre",
-    "U": "Activités extra-territoriales",
+    "U": "Activités extra-territoriales"
  };
 
 // Add the route
@@ -64,7 +64,7 @@ server.route({
 
                 var ape_code_level2 = obj.result.ape_code_level2.slice(0, 1).toString();
 
-                return h.response(Code_Naf[ape_code_level2]);
+                return codenaf[ape_code_level2];
                 
                 console.log(ape_code_level2);
             });
