@@ -40,7 +40,7 @@ const codenaf = {
 server.route({
     method: 'GET',
     path: '/',
-    handler: async () => {
+    handler: (req, h) => {
 
         //https://societeinfo.com/app/rest/api/v1/querysearch/companies/json?query=IDENTIQ&where=93100&limit=10&key=g4onk62np2m1a7q5co2engenbf3u3itbg3ggnfkbcfk6367sddp
         //https://societeinfo.com/app/rest/api/v1/company/json?registration_number=493361372&key=g4onk62np2m1a7q5co2engenbf3u3itbg3ggnfkbcfk6367sddp
