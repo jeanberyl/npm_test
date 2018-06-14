@@ -70,7 +70,7 @@ server.route({
 
                 console.log(codenaf[ape_code_level2]);
 
-                return 'code naf :' + codenaf[ape_code_level2];
+                return { 'value' : codenaf[ape_code_level2]};
                 
             });
 
