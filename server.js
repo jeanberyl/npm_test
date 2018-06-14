@@ -64,9 +64,12 @@ server.route({
 
                 var ape_code_level2 = obj.result.ape_code_level2.slice(0, 1).toString();
 
-                return codenaf[ape_code_level2];
-                
                 console.log(ape_code_level2);
+
+                console.log(codenaf[ape_code_level2]);
+
+                return codenaf;
+                
             });
 
          });
