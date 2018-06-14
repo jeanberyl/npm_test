@@ -6,7 +6,7 @@ const Hapi = require('hapi');
 // Create a server with a host and port
 const server = Hapi.server({
     host: process.env.HOST || 'localhost',
-    port: process.env.PORT || 8000
+    port: process.env.PORT || 3000
 });
 
 var Code_Naf = {
@@ -41,38 +41,37 @@ server.route({
     path: '/',
     handler: (request, h) => {
 
-var request = require('request');
-//https://societeinfo.com/app/rest/api/v1/querysearch/companies/json?query=IDENTIQ&where=93100&limit=10&key=g4onk62np2m1a7q5co2engenbf3u3itbg3ggnfkbcfk6367sddp
-//https://societeinfo.com/app/rest/api/v1/company/json?registration_number=493361372&key=g4onk62np2m1a7q5co2engenbf3u3itbg3ggnfkbcfk6367sddp
-request('https://societeinfo.com/app/rest/api/v1/querysearch/companies/json?query=IDENTIQ&where=93100&limit=10&key=g4onk62np2m1a7q5co2engenbf3u3itbg3ggnfkbcfk6367sddp', function (error, response, body) {
-    
-    console.log('error:', error); // Print the error if one occurred
-    console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-    console.log('body:', body); // Print the HTML for the Google homepage.
-    var obj = JSON.parse(body);
-    var result = obj.result;
-    var registration_number = result[0].registration_number;
-    console.log(registration_number);
-   
+        var request = require('request');
+        //https://societeinfo.com/app/rest/api/v1/querysearch/companies/json?query=IDENTIQ&where=93100&limit=10&key=g4onk62np2m1a7q5co2engenbf3u3itbg3ggnfkbcfk6367sddp
+        //https://societeinfo.com/app/rest/api/v1/company/json?registration_number=493361372&key=g4onk62np2m1a7q5co2engenbf3u3itbg3ggnfkbcfk6367sddp
+        request('https://societeinfo.com/app/rest/api/v1/querysearch/companies/json?query=IDENTIQ&where=93100&limit=10&key=g4onk62np2m1a7q5co2engenbf3u3itbg3ggnfkbcfk6367sddp', function (error, response, body) {
+            
+            console.log('error:', error); // Print the error if one occurred
+            console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+            console.log('body:', body); // Print the HTML for the Google homepage.
+            var obj = JSON.parse(body);
+            var result = obj.result;
+            var registration_number = result[0].registration_number;
+            console.log(registration_number);
+           
 
-    request('https://societeinfo.com/app/rest/api/v1/company/json?registration_number='+registration_number+'&key=g4onk62np2m1a7q5co2engenbf3u3itbg3ggnfkbcfk6367sddp', function (error, response, body) {
-    
-    console.log('error:', error); // Print the error if one occurred
-    console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-    console.log('body:', body); // Print the HTML for the Google homepage.
-    var obj = JSON.parse(body);
+            request('https://societeinfo.com/app/rest/api/v1/company/json?registration_number='+registration_number+'&key=g4onk62np2m1a7q5co2engenbf3u3itbg3ggnfkbcfk6367sddp', function (error, response, body) {
+            
+            console.log('error:', error); // Print the error if one occurred
+            console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+            console.log('body:', body); // Print the HTML for the Google homepage.
+            var obj = JSON.parse(body);
 
-    var ape_code_level2 = obj.result.ape_code_level2.slice(0, 1);
+            var ape_code_level2 = obj.result.ape_code_level2.slice(0, 1);
 
-    return Code_Naf[ape_code_level2];
-    
-    console.log(ape_code_level2);
-    });
+            return Code_Naf[ape_code_level2];
+            
+            console.log(ape_code_level2);
+            });
 
- });
+         });
 
 
-        return 'Hello';
     }
 })
 
