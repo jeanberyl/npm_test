@@ -55,7 +55,7 @@ const getCompany = (registration_number) => {
 };
 
 const fillZapier = (siret, naf) => {
-    return axios.post(`https://hooks.zapier.com/hooks/catch/3419258/wobpan/`, {
+    return setTimeout(() => axios.post(`https://hooks.zapier.com/hooks/catch/3419258/wobpan/`, {
         siret: siret.toString(),
         naf: naf
     }).then((response) => {   
@@ -63,7 +63,7 @@ const fillZapier = (siret, naf) => {
         console.log(response.data); 
 
         return response;
-    });
+    }), 3000);
 };
 
 const getCodeNaf = async (query, where) => {
