@@ -80,7 +80,7 @@ server.route({
 
         return body;
 
-    })()
+    })
 
     }
 })
@@ -102,13 +102,3 @@ async function start() {
 };
 
 start();
-
-
-
-
-// renvoie le code_ape_level2 à deux lettres
-// renvoyer au code Naf 
-
-/*
-
-*/
