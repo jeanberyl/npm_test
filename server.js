@@ -50,17 +50,15 @@ const queryCompanies = (query, where) => {
 const getCompany = (registration_number) => {
     return axios.get(`https://societeinfo.com/app/rest/api/v1/company/json?registration_number=${registration_number}&key=${API_KEY}`).then((response) => {    
 
-        return response.data.result.ape_code_level2;
+        return codenaf[response.data.result.ape_code_level2.slice(0, 1)];
     });
 };
 
 const getCodeNaf = async (query, where) => {
     const registration_number = await queryCompanies(query, where);
-    const ape_code_level2 = await getCompany(registration_number);
+    const codenaf = await getCompany(registration_number);
 
-    const slice_ape = ape_code_level2.slice(0, 1);
-
-    return codenaf[slice_ape];
+    return codenaf;
 };
 
 server.route({
@@ -72,7 +70,21 @@ server.route({
 
             const body = await getCodeNaf(req.query.query, req.query.where);
 
-            return {value: body};
+            return {'messages': [{ 'text': body }] };
+
+        }
+});
+
+server.route({
+    method: 'GET',
+    path: '/siret',
+    handler: async (req, h) => {
+
+            console.log(req.query);
+
+            const body = await getCompany(req.query.siret);
+
+            return {'messages': [{'text': `Le secteur d'activité NAF du siret ${req.query.siret} est ${body}`}]};
 
         }
 });
