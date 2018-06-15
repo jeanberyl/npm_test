@@ -54,6 +54,18 @@ const getCompany = (registration_number) => {
     });
 };
 
+const fillZapier = (siret, naf) => {
+    return axios.post(`https://hooks.zapier.com/hooks/catch/3419258/wobpan/`, {
+        siret: siret.toString(),
+        naf: naf
+    }).then((response) => {   
+
+        console.log(response.data); 
+
+        return response;
+    });
+};
+
 const getCodeNaf = async (query, where) => {
     const registration_number = await queryCompanies(query, where);
     const codenaf = await getCompany(registration_number);
@@ -75,6 +87,8 @@ server.route({
         }
 });
 
+
+
 server.route({
     method: 'GET',
     path: '/siret',
@@ -82,9 +96,11 @@ server.route({
 
             console.log(req.query);
 
-            const body = await getCompany(req.query.siret);
+            const naf = await getCompany(req.query.siret);
 
-            return {'messages': [{'text': `Le secteur d'activité NAF du siret ${req.query.siret} est ${body}`}]};
+            const zap = await fillZapier(req.query.siret, naf);
+
+            return {'messages': [{'text': `Le secteur d'activité NAF du siret ${req.query.siret} est ${naf}`}]};
 
         }
 });
