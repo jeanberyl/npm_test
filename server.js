@@ -2,6 +2,7 @@
 
 const Hapi = require('hapi');
 const request = require('request');
+const axios = require('axios');
 
 
 // Create a server with a host and port
@@ -37,53 +38,44 @@ const codenaf = {
 
 // Add the route
 
+const API_KEY = 'a8fqrjl63ciuvduiglp36r36o29nivj3qdjq542drrhpvt3t540';
+
+const queryCompanies = (query, where) => {
+    return axios.get(`https://societeinfo.com/app/rest/api/v1/querysearch/companies/json?query=${query}&where=${where}&limit=10&key=${API_KEY}`).then((response) => {    
+
+        return response.data.result[0].registration_number;
+    });
+};
+
+const getCompany = (registration_number) => {
+    return axios.get(`https://societeinfo.com/app/rest/api/v1/company/json?registration_number=${registration_number}&key=${API_KEY}`).then((response) => {    
+
+        return response.data.result.ape_code_level2;
+    });
+};
+
+const getCodeNaf = async (query, where) => {
+    const registration_number = await queryCompanies(query, where);
+    const ape_code_level2 = await getCompany(registration_number);
+
+    const slice_ape = ape_code_level2.slice(0, 1);
+
+    return codenaf[slice_ape];
+};
+
 server.route({
     method: 'GET',
     path: '/',
-    handler: (req, h) => {
+    handler: async (req, h) => {
 
-        return (async () => {
+            console.log(req.query);
 
-        //https://societeinfo.com/app/rest/api/v1/querysearch/companies/json?query=IDENTIQ&where=93100&limit=10&key=g4onk62np2m1a7q5co2engenbf3u3itbg3ggnfkbcfk6367sddp
-        //https://societeinfo.com/app/rest/api/v1/company/json?registration_number=493361372&key=g4onk62np2m1a7q5co2engenbf3u3itbg3ggnfkbcfk6367sddp
-        const body = await request('https://societeinfo.com/app/rest/api/v1/querysearch/companies/json?query=IDENTIQ&where=93100&limit=10&key=a8fqrjl63ciuvduiglp36r36o29nivj3qdjq542drrhpvt3t540', function (error, response, body) {
-            
-            console.log('error:', error); // Print the error if one occurred
-            console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-            console.log('body:', body); // Print the HTML for the Google homepage.
-            var obj = JSON.parse(body);
-            var result = obj.result;
-            var registration_number = result[0].registration_number;
-            console.log(registration_number);
-           
+            const body = await getCodeNaf(req.query.query, req.query.where);
 
-            request('https://societeinfo.com/app/rest/api/v1/company/json?registration_number='+registration_number+'&key=a8fqrjl63ciuvduiglp36r36o29nivj3qdjq542drrhpvt3t540', function (error, response, body) {
-            
-                console.log('error:', error); // Print the error if one occurred
-                console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-                console.log('body:', body); // Print the HTML for the Google homepage.
-                var obj = JSON.parse(body);
+            return {value: body};
 
-                console.log(obj.result.ape_code_level2);
-
-                var ape_code_level2 = obj.result.ape_code_level2.slice(0, 1);
-
-                console.log(ape_code_level2);
-
-                console.log(codenaf[ape_code_level2]);
-
-                return codenaf[ape_code_level2];
-                
-            });
-
-         });
-
-        return body;
-
-    })
-
-    }
-})
+        }
+});
 
 
 
